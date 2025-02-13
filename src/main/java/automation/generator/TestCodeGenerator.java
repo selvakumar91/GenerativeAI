@@ -10,7 +10,7 @@ public class TestCodeGenerator {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(llmResponse);
             JsonNode choicesNode = rootNode.path("choices");
-            if (choicesNode.isArray() && choicesNode.size() > 0) {
+            if (choicesNode.isArray() && !choicesNode.isEmpty()) {
                 JsonNode messageNode = choicesNode.get(0).path("message");
                 String content = messageNode.path("content").asText().trim();
                 if (content.contains("```java")) {
@@ -63,7 +63,7 @@ public class TestCodeGenerator {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(llmResponse);
             JsonNode choicesNode = rootNode.path("choices");
-            if (choicesNode.isArray() && choicesNode.size() > 0) {
+            if (choicesNode.isArray() && !choicesNode.isEmpty()) {
                 JsonNode messageNode = choicesNode.get(0).path("message");
                  pwcontent = messageNode.path("content").asText().trim();
             }
@@ -72,5 +72,22 @@ public class TestCodeGenerator {
                 e.printStackTrace();
         }
         return pwcontent;
+    }
+
+    public String extractCypressCode(String llmResponse) {
+        String cypcontent = "";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(llmResponse);
+            JsonNode choicesNode = rootNode.path("choices");
+            if (choicesNode.isArray() && !choicesNode.isEmpty()) {
+                JsonNode messageNode = choicesNode.get(0).path("message");
+                cypcontent = messageNode.path("content").asText().trim();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return cypcontent;
     }
 }
